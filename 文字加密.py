@@ -3,6 +3,8 @@
 from Crypto.Cipher import AES
 import base64
 import os
+import sys
+
 # the block size for the cipher object; must be 16, 24, or 32 for AES
 BLOCK_SIZE = 32
 # the character used for padding--with a block cipher such as AES, the value
@@ -18,9 +20,13 @@ DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
 # generate a random password(secret) key
 # password = os.urandom(BLOCK_SIZE)
 
-password = "abc///."
+password = "jHnjLr312pGWjHnjGWjHnjLr312DD8uj"
 key32 = "{: <32}".format(password).encode("utf-8")
-cipher = AES.new(key32, AES.MODE_ECB)
+try:
+    cipher = AES.new(key32, AES.MODE_ECB)
+except:
+    print("密码超过32个字符！")
+    sys.exit(-1)
 
 print ('key32: %s'%key32)
 # create a cipher object using the random secret
@@ -34,7 +40,7 @@ encoded = EncodeAES(cipher, byte_str)
 print ('Encrypted string: %s' %encoded)
 
 # 加密文本
-# encoded =b'GAykDtxAmu683bLPIxcrCi/uXSM+ld+jHnjLr312pGWDZU1cAWuyyk6QiWLkGr7gQxZNQsMnWsoLkMZPw3W81nlOJTUiN/7MsmxPZXabN9x5TiU1Ijf+zLJsT2V2mzfc'
+# encoded =b'rx1vbluXE55JogOltvxfml/XdkCQTRjx7ZRCvohzy8M='
 # decode the encoded string
 decoded = DecodeAES(cipher, encoded)
 try:
@@ -42,4 +48,4 @@ try:
     print ('Decrypted string: %s' %text_decoded)
 except:
     print("密码错误！")
-
+    sys.exit(-1)
