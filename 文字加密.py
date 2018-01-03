@@ -15,8 +15,8 @@ pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
 # encrypt with AES, encode with base64
 EncodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
 DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
-# generate a random secret key
-# secret = os.urandom(BLOCK_SIZE)
+# generate a random password(secret) key
+# password = os.urandom(BLOCK_SIZE)
 
 password = "abc///."
 key32 = "{: <32}".format(password).encode("utf-8")
@@ -32,7 +32,14 @@ print("文本：%s"%raw_string)
 byte_str = raw_string.encode("utf-8")
 encoded = EncodeAES(cipher, byte_str)
 print ('Encrypted string: %s' %encoded)
+
+# 加密文本
+# encoded =b'GAykDtxAmu683bLPIxcrCi/uXSM+ld+jHnjLr312pGWDZU1cAWuyyk6QiWLkGr7gQxZNQsMnWsoLkMZPw3W81nlOJTUiN/7MsmxPZXabN9x5TiU1Ijf+zLJsT2V2mzfc'
 # decode the encoded string
 decoded = DecodeAES(cipher, encoded)
-text_decoded=decoded.decode("utf-8")
-print ('Decrypted string: %s' %text_decoded)
+try:
+    text_decoded=decoded.decode("utf-8")
+    print ('Decrypted string: %s' %text_decoded)
+except:
+    print("密码错误！")
+
